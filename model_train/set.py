@@ -93,7 +93,6 @@ class Modeltrainer():
             y = y.to('cuda')
 
             output = self.model(x)
-         ##   output = self.min_max_normalize(output)
             panerty = self.is_decrease(output,x)
             with torch.no_grad():
                 loss = self.loss_fn(output, y,panerty)
@@ -122,20 +121,6 @@ class Modeltrainer():
             dec2 = 0
 
         return dec1 + dec2
-    
-    def min_max_normalize(self, y):
-        if self.min is not None and self.max is not None:
-            y = (y - self.min) / (self.max - self.min)
-            y = y.clamp(0, 1)
-        return y
-
-    def min_max_define(self,epoch):
-        if epoch+1 >= 20:
-            min_max_data = torch.tensor([[0], [90]], dtype=torch.float64).to('cuda')
-            with torch.no_grad():
-                self.max, self.min = self.model(min_max_data)
-                self.max = self.max.item()
-                self.min = self.min.item()
 
 
 
@@ -157,7 +142,6 @@ class Modeltrainer():
 
                 self.opt.zero_grad()
                 output = self.model(x)
-              ##  output = self.min_max_normalize(output)
 
                 panerty = self.is_decrease(output,x)
                 loss = self.loss_fn(output, y, panerty)
@@ -165,7 +149,6 @@ class Modeltrainer():
                 loss.backward()
                 self.opt.step()
 
-               ## self.min_max_define(epoch)
                 loop.set_postfix(loss=loss.item())
                 self.scheduler.step()
                 meanloss.append(loss.item())
@@ -178,7 +161,6 @@ class Modeltrainer():
             self.check_best_model(train_loader)
             if epoch % 10 == 0 and epoch != 0:
                 mean =sum(meanloss)/len(meanloss)
-               ## self.min_max_define(epoch)
                 self.check_best_model(train_loader)
 
                 print(f'Epoch {epoch+1}, Loss: {loss.item()}, best_loss: {self.best_loss}, meanloss: {mean}')
