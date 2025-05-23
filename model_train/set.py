@@ -42,10 +42,10 @@ class Compute_fucs():
         cos = cos.to('cuda')
         starts = cos
         xs = starts + (self.grid.to('cuda') * (1 - starts))
-        langth = (self.grid[1]-self.grid[0])*(1 - starts)
-        langth = langth.to('cuda')
+        length = (self.grid[1]-self.grid[0])*(1 - starts)
+        length = langth.to('cuda')
         ys = torch.sqrt(torch.clamp(1 - xs**2, min=1e-8))
-        result = langth*ys
+        result = length*ys
         return result.sum(dim=1)
     
     def compute_triangle(self, cos):
