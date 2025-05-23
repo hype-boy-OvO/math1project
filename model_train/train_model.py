@@ -20,7 +20,7 @@ for state in opt.state.values():
 
 best_loss = checkpoint['best_loss']
 
-trainer = set.Modeltrainer(model=model,opt=opt)#best_loss=best_loss
+trainer = set.Modeltrainer(model=model,opt=opt,best_loss=best_loss)
 
 
 try:
