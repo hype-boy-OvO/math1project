@@ -43,7 +43,7 @@ class Compute_fucs():
         starts = cos
         xs = starts + (self.grid.to('cuda') * (1 - starts))
         length = (self.grid[1]-self.grid[0])*(1 - starts)
-        length = langth.to('cuda')
+        length = length.to('cuda')
         ys = torch.sqrt(torch.clamp(1 - xs**2, min=1e-8))
         result = length*ys
         return result.sum(dim=1)
