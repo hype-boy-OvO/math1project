@@ -123,6 +123,19 @@ class Modeltrainer():
         return dec1 + dec2
 
 
+    def min_max_normalize(self, y):
+        if self.min is not None and self.max is not None:
+            y = (y - self.min) / (self.max - self.min)
+            y = y.clamp(0, 1)
+        return y
+
+    def min_max_define(self,epoch):
+        if epoch+1 >= 20:
+            min_max_data = torch.tensor([[0], [90]], dtype=torch.float64).to('cuda')
+            with torch.no_grad():
+                self.max, self.min = self.model(min_max_data)
+                self.max = self.max.item()
+                self.min = self.min.item()
 
     
     def train(self,x,y,num_epochs):
