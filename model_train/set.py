@@ -135,7 +135,6 @@ class Modeltrainer():
         meanloss = []
         for epoch in range(num_epochs):
             loop = tqdm(train_loader, desc=f"Epoch {epoch+1}/{num_epochs}",leave=False)
-            self.min_max_define(epoch)
             for x, y in loop:
                 x = x.to('cuda')
                 y = y.to('cuda')
