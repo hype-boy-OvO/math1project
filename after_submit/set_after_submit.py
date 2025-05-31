@@ -5,7 +5,6 @@ from torch.optim.lr_scheduler import ReduceLROnPlateau
 from tqdm import tqdm
 import copy
 import torch.nn.init as init
-import statistics as stats
 
 class ResidualBlock(nn.Module):
     def __init__(self,in_features=None,out_features=None):
@@ -134,7 +133,7 @@ class Modeltrainer():
                 mean.append(loss.item())
 
         meanloss = sum(mean)/len(mean)
-        print(f'std:{stats.pstdev(mean)}')
+        print(f'std:{torch.std(mean)}')
         self.model.train() 
         if meanloss < self.best_loss:
             self.best_loss = meanloss
